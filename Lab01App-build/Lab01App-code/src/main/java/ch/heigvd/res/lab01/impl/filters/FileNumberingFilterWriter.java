@@ -23,7 +23,6 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
   private int lineCounter = 0;
-  private boolean lineBreak = false;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -45,10 +44,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    if((!lineBreak && c!= '\n') || lineCounter == 0){
-      // line break detected
-      lineBreak = true;
-      // write index of the line
+    if(lineCounter == 0){
+      // write index of the first line
       out.write(String.valueOf(++lineCounter) + '\t');
     }
 
@@ -56,14 +53,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     // Look for line break
     if(c == '\n'){
-      // line break detected
-      lineBreak = true;
-      // write index of the line
+      // write index of the new line (used to write index of empty line)
       out.write(String.valueOf(++lineCounter) + '\t');
-    }
-    else if(c == 'r'){
-      // end of line break
-      lineBreak = false;
     }
   }
 
