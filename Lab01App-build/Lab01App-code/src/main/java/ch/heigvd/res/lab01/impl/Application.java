@@ -5,17 +5,13 @@ import ch.heigvd.res.lab01.impl.transformers.CompleteFileTransformer;
 import ch.heigvd.res.lab01.interfaces.IApplication;
 import ch.heigvd.res.lab01.interfaces.IFileExplorer;
 import ch.heigvd.res.lab01.interfaces.IFileVisitor;
-import ch.heigvd.res.lab01.quotes.QuoteClient;
 import ch.heigvd.res.lab01.quotes.Quote;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import ch.heigvd.res.lab01.quotes.QuoteClient;
+import org.apache.commons.io.FileUtils;
+
+import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -125,7 +121,19 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String quotes = "";
+    for(int i = 0; i < quote.getTags().size(); i++){
+      quotes += quote.getTags().get(i);
+      if(i + 1 < quote.getTags().size())
+        quotes += "/";
+    }
+    File fileDirectory = new File(WORKSPACE_DIRECTORY, quotes);
+    fileDirectory.mkdirs();
+
+    FileWriter fileWriter = new FileWriter(new File(fileDirectory, filename));
+    fileWriter.write(quote.getQuote());
+    fileWriter.close();
+
   }
   
   /**
@@ -148,7 +156,7 @@ public class Application implements IApplication {
   
   @Override
   public String getAuthorEmail() {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    return "matthieu.villard@heig-vd.ch";
   }
 
   @Override
