@@ -46,10 +46,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
   @Override
   public void write(int c) throws IOException {
     if((!lineBreak && c!= '\n') || lineCounter == 0){
-      // line break detected
-      lineBreak = true;
-      // write index of the line
-      out.write(String.valueOf(++lineCounter) + '\t');
+
     }
 
     out.write(c); // Write single char
